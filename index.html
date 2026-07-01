@@ -176,6 +176,47 @@
   </div>
 </div>
 
+<!-- ══════════════ ADMIN SCREEN (CRUD, bukan toko) ══════════════ -->
+<div id="adminScreen" class="hide">
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="#" class="brand">Aksara Store<sup>Admin</sup></a>
+      <div class="nav-right">
+        <div class="nav-user">Halo, <b id="adminNameLabel"></b> <span style="color:var(--gold)">(Admin)</span></div>
+        <button class="btn-logout" onclick="doLogout()">Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-head">
+      <div class="tag-line">Panel Admin</div>
+      <h1 class="page-title">Kelola <em>Toko</em></h1>
+    </div>
+
+    <div class="acc-panel">
+      <h3>Tambah Buku Baru</h3>
+      <form onsubmit="return addProduct(event)" style="display:grid;grid-template-columns:1fr 1fr;gap:0 1.4rem">
+        <div><label class="f-label">Judul</label><input class="c-input" id="ap-title" required/></div>
+        <div><label class="f-label">Penulis</label><input class="c-input" id="ap-author" required/></div>
+        <div><label class="f-label">Genre</label><input class="c-input" id="ap-genre" required/></div>
+        <div><label class="f-label">Harga (Rp)</label><input class="c-input" type="number" id="ap-price" required/></div>
+        <div style="grid-column:1/-1"><button type="submit" class="btn btn-gold" style="margin-top:1.4rem">+ Tambah Buku</button></div>
+      </form>
+    </div>
+
+    <div class="acc-panel">
+      <h3>Daftar Buku (Kelola)</h3>
+      <div id="adminProductTable"></div>
+    </div>
+
+    <div class="acc-panel">
+      <h3>Semua Pesanan Masuk</h3>
+      <div id="adminOrderTable"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════════════ STORE SCREEN (only visible after login) ══════════════ -->
 <div id="storeScreen" class="hide">
 
@@ -285,6 +326,30 @@ const NOVELS = [
   {id:13,title:'Hutan Abadi',author:'Putri Andini',genre:'Fantasy',price:28000,orig:40000,icon:'🌿',badge:'Diskon'}
 ];
 
+// ── PRODUK: data dasar + perubahan admin (tambah/edit/hapus) ──
+const DB_PRODUCTS = 'aksara_product_overrides'; // { deleted:[id,...], edited:{id:{...}}, added:[{...}] }
+
+function loadOverrides(){
+  return JSON.parse(localStorage.getItem(DB_PRODUCTS) || '{"deleted":[],"edited":{},"added":[]}');
+}
+function saveOverrides(o){ localStorage.setItem(DB_PRODUCTS, JSON.stringify(o)); }
+
+// gabungkan katalog dasar + perubahan admin -> ini yang dipakai di toko & panel admin
+function getProducts(){
+  const ov = loadOverrides();
+  let list = NOVELS
+    .filter(n => !ov.deleted.includes(n.id))
+    .map(n => ov.edited[n.id] ? { ...n, ...ov.edited[n.id] } : n);
+  list = list.concat(ov.added);
+  return list;
+}
+
+function nextProductId(){
+  const ov = loadOverrides();
+  const allIds = NOVELS.map(n=>n.id).concat(ov.added.map(n=>n.id));
+  return allIds.length ? Math.max(...allIds) + 1 : 1;
+}
+
 let cart = [];
 
 // ── AUTH ──
@@ -337,6 +402,7 @@ function doLogout(){
   sessionStorage.removeItem(DB_SESSION);
   cart = [];
   document.getElementById('storeScreen').classList.add('hide');
+  document.getElementById('adminScreen').classList.add('hide');
   document.getElementById('authScreen').classList.remove('hide');
   showLogin();
 }
@@ -349,6 +415,19 @@ function enterStore(){
   const s = getSession();
   if (!s) return;
   document.getElementById('authScreen').classList.add('hide');
+
+  // Admin bukan pembeli — perannya CRUD (kelola produk/pesanan/pengguna),
+  // bukan belanja. Jadi kalau yang login admin, jangan tampilkan toko;
+  // tampilkan panel admin sederhana sebagai gantinya.
+  if (s.role === 'admin'){
+    document.getElementById('storeScreen').classList.add('hide');
+    document.getElementById('adminScreen').classList.remove('hide');
+    document.getElementById('adminNameLabel').textContent = s.name.split(' ')[0];
+    renderAdminOrders();
+    return;
+  }
+
+  document.getElementById('adminScreen').classList.add('hide');
   document.getElementById('storeScreen').classList.remove('hide');
   document.getElementById('userNameLabel').textContent = s.name.split(' ')[0];
   renderCatalog();
@@ -358,7 +437,12 @@ function enterStore(){
 // ── CATALOG ──
 function renderCatalog(){
   const grid = document.getElementById('catalogGrid');
-  grid.innerHTML = NOVELS.map(n => `
+  const products = getProducts();
+  if (products.length === 0){
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">Belum ada buku tersedia saat ini.</div>';
+    return;
+  }
+  grid.innerHTML = products.map(n => `
     <div class="card">
       <div class="card-cover" style="background:linear-gradient(150deg,#12121f,#1a1a2e,#16213e)">
         ${n.badge ? `<span class="card-badge">${n.badge}</span>` : ''}
@@ -379,7 +463,8 @@ function renderCatalog(){
 
 // ── CART ──
 function addToCart(id){
-  const novel = NOVELS.find(n => n.id === id);
+  const novel = getProducts().find(n => n.id === id);
+  if (!novel) return;
   cart.push(novel);
   updateCart();
   toast(`"${novel.title}" ditambahkan ke keranjang`);
@@ -462,6 +547,106 @@ function renderOrderHistory(){
     <tbody>${mine.slice().reverse().map(o => `
       <tr>
         <td>${o.code}</td>
+        <td>${o.items.join(', ')}</td>
+        <td>Rp ${o.total.toLocaleString('id')}</td>
+        <td>${new Date(o.date).toLocaleDateString('id')}</td>
+      </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ── ADMIN: CRUD PRODUK ──
+function addProduct(e){
+  e.preventDefault();
+  const title  = document.getElementById('ap-title').value.trim();
+  const author = document.getElementById('ap-author').value.trim();
+  const genre  = document.getElementById('ap-genre').value.trim();
+  const price  = parseInt(document.getElementById('ap-price').value, 10);
+  if (!title || !author || !genre || !price){ return false; }
+
+  const ov = loadOverrides();
+  ov.added.push({ id: nextProductId(), title, author, genre, price, orig:null, icon:'📖', badge:'Baru' });
+  saveOverrides(ov);
+
+  document.getElementById('ap-title').value = '';
+  document.getElementById('ap-author').value = '';
+  document.getElementById('ap-genre').value = '';
+  document.getElementById('ap-price').value = '';
+  renderAdminProducts();
+  toast(`Buku "${title}" ditambahkan`);
+  return false;
+}
+
+function editProductPrice(id){
+  const current = getProducts().find(n => n.id === id);
+  if (!current) return;
+  const newPrice = prompt(`Harga baru untuk "${current.title}" (Rp):`, current.price);
+  if (newPrice === null) return;
+  const parsed = parseInt(newPrice, 10);
+  if (isNaN(parsed) || parsed <= 0){ toast('⚠ Harga tidak valid'); return; }
+
+  const ov = loadOverrides();
+  const isAdded = ov.added.find(n => n.id === id);
+  if (isAdded){
+    isAdded.price = parsed;
+  } else {
+    ov.edited[id] = { ...(ov.edited[id]||{}), price: parsed };
+  }
+  saveOverrides(ov);
+  renderAdminProducts();
+  toast('Harga diperbarui');
+}
+
+function deleteProduct(id){
+  const current = getProducts().find(n => n.id === id);
+  if (!current) return;
+  if (!confirm(`Hapus "${current.title}" dari katalog?`)) return;
+
+  const ov = loadOverrides();
+  ov.added = ov.added.filter(n => n.id !== id);
+  if (!ov.deleted.includes(id) && NOVELS.find(n=>n.id===id)) ov.deleted.push(id);
+  saveOverrides(ov);
+  renderAdminProducts();
+  toast('Buku dihapus dari katalog');
+}
+
+function renderAdminProducts(){
+  const box = document.getElementById('adminProductTable');
+  const products = getProducts();
+  if (products.length === 0){
+    box.innerHTML = '<div class="empty-state">Belum ada buku. Tambahkan lewat form di atas.</div>';
+    return;
+  }
+  box.innerHTML = `<table>
+    <thead><tr><th>Judul</th><th>Penulis</th><th>Genre</th><th>Harga</th><th></th></tr></thead>
+    <tbody>${products.map(n => `
+      <tr>
+        <td>${n.title}</td>
+        <td>${n.author}</td>
+        <td>${n.genre}</td>
+        <td>Rp ${n.price.toLocaleString('id')}</td>
+        <td style="text-align:right;white-space:nowrap">
+          <button class="btn-logout" style="margin-right:.4rem" onclick="editProductPrice(${n.id})">Edit Harga</button>
+          <button class="btn-logout" onclick="deleteProduct(${n.id})" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'">Hapus</button>
+        </td>
+      </tr>`).join('')}</tbody>
+  </table>`;
+}
+
+// ── ADMIN: SEMUA PESANAN (read-only) ──
+function renderAdminOrders(){
+  renderAdminProducts();
+  const box = document.getElementById('adminOrderTable');
+  const orders = loadOrders();
+  if (orders.length === 0){
+    box.innerHTML = '<div class="empty-state">Belum ada pesanan masuk.</div>';
+    return;
+  }
+  box.innerHTML = `<table>
+    <thead><tr><th>Kode</th><th>Pembeli</th><th>Item</th><th>Total</th><th>Tanggal</th></tr></thead>
+    <tbody>${orders.slice().reverse().map(o => `
+      <tr>
+        <td>${o.code}</td>
+        <td>${o.email}</td>
         <td>${o.items.join(', ')}</td>
         <td>Rp ${o.total.toLocaleString('id')}</td>
         <td>${new Date(o.date).toLocaleDateString('id')}</td>
