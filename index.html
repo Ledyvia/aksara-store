@@ -1,28 +1,200 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aksara Store — Novel Digital & Ebook Premium</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg:#08080f; --bg2:#0d0d18; --bg3:#12121f; --card:#0f0f1c;
-      --gold:#c8a84b; --gold2:#e5c97a; --text:#e8e2d4; --muted:#6b6b88;
-      --border:rgba(200,168,75,.14); --red:#e05555;
-      --serif:'Cormorant Garamond',Georgia,serif;
-      --sans:'Outfit',sans-serif;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;overflow-x:hidden}
-    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.4}
-    ::-webkit-scrollbar{width:3px}
-    ::-webkit-scrollbar-track{background:var(--bg)}
-    ::-webkit-scrollbar-thumb{background:var(--gold)}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aksara Store — Platform Baca Novel Digital</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#08080f; --bg2:#0d0d18; --bg3:#12121f; --card:#0f0f1c;
+  --gold:#c8a84b; --gold2:#e5c97a; --text:#e8e2d4; --muted:#6b6b88;
+  --border:rgba(200,168,75,.14); --red:#e05555;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Outfit',sans-serif;
+  --adm-bg:#f0f0f1; --adm-side:#1d2327; --adm-side2:#2c3338; --adm-text:#3c434a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;overflow-x:hidden}
+a{text-decoration:none}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.4}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold)}
 
+/* Which of the 4 top-level "pages" (landing / cms-login / cms-panel / app) is visible */
+#landingView.hidden, #adminLoginView.hidden, #adminPanelView.hidden, #appView.hidden{display:none !important}
+
+/* ══════════════════════════════════════════════════════════════════
+   LANDING PAGE + CMS ADMIN — styles scoped so they never bleed into
+   the app view below, even though some class names (.hero, .btn-gold,
+   .faq-item, etc.) are reused by both apps with slightly different values.
+   ══════════════════════════════════════════════════════════════════ */
+@scope (#landingScope) {
+/* ===== LANDING PAGE ===== */
+.navbar-aks{position:fixed;top:0;width:100%;z-index:1000;padding:1.1rem 0;transition:all .4s}
+.navbar-aks.scrolled{background:rgba(8,8,15,.94);backdrop-filter:blur(24px);padding:.7rem 0;border-bottom:1px solid var(--border)}
+.nav-brand{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--gold)}
+.nav-brand sup{font-size:.5rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);vertical-align:super;margin-left:3px}
+.nav-link-i{color:var(--muted);text-decoration:none;font-size:.74rem;letter-spacing:1.8px;text-transform:uppercase;padding:.4rem .8rem;transition:color .3s;background:none;border:none}
+.nav-link-i:hover{color:var(--gold)}
+.gear-btn{background:transparent;border:1px solid var(--border);color:var(--muted);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;font-size:1rem}
+.gear-btn:hover{border-color:var(--gold);color:var(--gold);transform:rotate(45deg)}
+.btn-cta-nav{background:var(--gold);color:#08080f;border:none;border-radius:1px;padding:.5rem 1.2rem;font-size:.72rem;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;transition:all .3s}
+.btn-cta-nav:hover{background:var(--gold2);color:#08080f}
+
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:8rem 0 5rem}
+.hero-ambient{position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 75% 45%,rgba(200,168,75,.08) 0%,transparent 65%),radial-gradient(ellipse 35% 50% at 15% 70%,rgba(80,60,160,.06) 0%,transparent 60%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,168,75,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,.03) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 80%)}
+.eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.67rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid var(--border);padding:.4rem 1.1rem;margin-bottom:2rem}
+.dot-pulse{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-h1{font-family:var(--serif);font-size:clamp(2.8rem,6vw,5.8rem);font-weight:700;line-height:1.02;letter-spacing:-1px}
+.hero-h1 .it{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:1rem;color:var(--muted);max-width:460px;line-height:1.85;margin:1.8rem 0 2.5rem}
+.btn-gold{background:var(--gold);color:#08080f;border:none;border-radius:1px;padding:.9rem 2.2rem;font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .35s;display:inline-block;cursor:pointer}
+.btn-gold:hover{background:var(--gold2);color:#08080f;transform:translateY(-2px);box-shadow:0 10px 35px rgba(200,168,75,.25)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid rgba(232,226,212,.15);border-radius:1px;padding:.9rem 2.2rem;font-size:.8rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all .35s;display:inline-block}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.hero-metrics{display:flex;gap:2.5rem;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.mval{font-family:var(--serif);font-size:2.1rem;font-weight:700;color:var(--gold);line-height:1}
+.mlbl{font-size:.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:.3rem}
+
+.books-wrap{position:relative;width:300px;height:400px;margin:0 auto}
+.bk{position:absolute;border-radius:3px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.6);border:1px solid var(--border);background:linear-gradient(160deg,var(--bg3),var(--card))}
+.bk-main{width:170px;aspect-ratio:2/3;top:0;left:50%;transform:translateX(-50%);z-index:3;border-color:rgba(200,168,75,.25)}
+.bk-l{width:120px;aspect-ratio:2/3;top:50px;left:0;transform:rotate(-8deg);z-index:2}
+.bk-r{width:120px;aspect-ratio:2/3;top:60px;right:0;transform:rotate(6deg);z-index:2}
+.bk-face{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem .6rem;text-align:center}
+.bk-ico{font-size:1.9rem;margin-bottom:.5rem}
+.bk-ttl{font-family:var(--serif);font-size:.8rem;font-weight:700;line-height:1.25}
+.fl-badge{position:absolute;background:var(--gold);color:#08080f;font-size:.58rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.3rem .7rem;top:1rem;right:-1rem;z-index:10}
+.fl-badge2{position:absolute;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:.6rem;padding:.5rem .9rem;bottom:1.5rem;left:-1rem;z-index:10}
+
+.ticker{background:var(--gold);padding:.7rem 0;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-block;animation:tick 22s linear infinite;font-size:.68rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#08080f}
+.ticker-inner span{margin:0 2.2rem}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.section{padding:6rem 0}
+.section-alt{background:var(--bg2)}
+.tag-line{display:inline-flex;align-items:center;gap:.5rem;font-size:.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem}
+.tag-line::before{content:'';width:20px;height:1px;background:var(--gold)}
+.sec-h{font-family:var(--serif);font-size:clamp(1.9rem,3.5vw,2.9rem);font-weight:700;line-height:1.1}
+.sec-h em{font-style:italic;color:var(--gold)}
+.divider{width:40px;height:1.5px;background:var(--gold);margin:1.2rem 0}
+.divider.mx-auto{margin-left:auto;margin-right:auto}
+.muted-p{color:var(--muted);font-size:.9rem;line-height:1.85}
+
+.about-points li{display:flex;gap:.7rem;margin-bottom:1rem;font-size:.88rem;color:var(--text);align-items:flex-start}
+.about-points i{color:var(--gold);margin-top:.2rem}
+
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:2px;padding:2rem 1.6rem;height:100%;transition:all .35s}
+.feat-card:hover{border-color:rgba(200,168,75,.35);transform:translateY(-4px)}
+.feat-ico{width:50px;height:50px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:1.1rem;color:var(--gold);background:rgba(200,168,75,.04)}
+.feat-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:.5rem}
+.feat-desc{font-size:.85rem;color:var(--muted);line-height:1.75}
+
+.step-icon{width:52px;height:52px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1rem;color:var(--gold);background:rgba(200,168,75,.04)}
+.step-title{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin-bottom:.5rem}
+.step-desc{font-size:.85rem;color:var(--muted);line-height:1.75}
+.step-num{font-family:var(--serif);font-size:3.4rem;font-weight:700;color:rgba(200,168,75,.12);line-height:1;margin-bottom:.3rem}
+
+.stats-band{display:flex;gap:1.5rem;background:var(--card);border:1px solid var(--border);padding:1.2rem 2rem;border-radius:2px;flex-wrap:wrap;justify-content:center}
+.stat-item{text-align:center;padding:0 1rem}
+.stat-item .v{font-family:var(--serif);font-size:2.3rem;font-weight:700;color:var(--gold);line-height:1}
+.stat-item .l{font-size:.66rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:.3rem}
+.stat-sep{width:1px;background:var(--border)}
+
+.t-card{background:var(--card);border:1px solid var(--border);border-radius:2px;padding:1.8rem;height:100%}
+.t-q{font-family:var(--serif);font-size:2.5rem;color:var(--gold);line-height:.6;margin-bottom:.6rem}
+.t-stars{color:var(--gold);font-size:.85rem;margin-bottom:.7rem}
+.t-text{font-size:.85rem;color:var(--text);line-height:1.75;margin-bottom:1.2rem}
+.t-av{width:38px;height:38px;border-radius:50%;background:rgba(200,168,75,.12);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;margin-right:.7rem}
+.t-name{font-size:.85rem;font-weight:500}
+.t-role{font-size:.68rem;color:var(--muted)}
+
+.faq-item{border-bottom:1px solid var(--border);padding:1.3rem 0}
+.faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:.95rem;font-weight:500}
+.faq-icon{color:var(--gold);transition:transform .3s}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:all .35s ease;font-size:.85rem;color:var(--muted);line-height:1.8}
+.faq-item.open .faq-a{max-height:300px;margin-top:.8rem}
+
+.cta-band{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:2px;padding:4rem 2rem;text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(200,168,75,.1),transparent 70%)}
+
+.footer-aks{background:var(--bg2);border-top:1px solid var(--border);padding:3.5rem 0 1.5rem}
+.footer-h{font-family:var(--serif);font-size:.9rem;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:1rem;text-transform:uppercase}
+.footer-link{display:block;color:var(--muted);font-size:.82rem;margin-bottom:.6rem;transition:color .3s}
+.footer-link:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid var(--border);margin-top:2.5rem;padding-top:1.5rem;font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.admin-link-foot{color:var(--muted);font-size:.68rem;letter-spacing:1px}
+.admin-link-foot:hover{color:var(--gold)}
+
+.rev{opacity:0;transform:translateY(24px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.rev.on{opacity:1;transform:translateY(0)}
+
+@media(max-width:991px){.books-wrap{margin-top:3rem}}
+
+/* ===== ADMIN LOGIN ===== */
+#adminLoginView{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);position:relative}
+.login-card{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:3rem 2.5rem;width:100%;max-width:380px}
+.login-card .nav-brand{display:block;text-align:center;margin-bottom:.3rem;font-size:2rem}
+.login-sub{text-align:center;color:var(--muted);font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2rem}
+.f-label{font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;display:block}
+.f-inp{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.7rem .9rem;border-radius:2px;font-family:var(--sans);font-size:.9rem;outline:none;transition:border-color .3s;margin-bottom:1.1rem}
+.f-inp:focus{border-color:var(--gold)}
+.login-err{color:#e05555;font-size:.78rem;margin-bottom:1rem;display:none}
+.login-err.show{display:block}
+.back-to-site{display:block;text-align:center;margin-top:1.5rem;color:var(--muted);font-size:.72rem;letter-spacing:1px}
+.back-to-site:hover{color:var(--gold)}
+.login-hint{background:rgba(200,168,75,.06);border:1px solid var(--border);border-radius:2px;padding:.7rem .9rem;font-size:.7rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6}
+
+/* ===== ADMIN PANEL (WordPress-style) ===== */
+#adminPanelView{background:var(--adm-bg);min-height:100vh;font-family:var(--sans);color:var(--adm-text)}
+.adm-shell{display:flex;min-height:100vh}
+.adm-sidebar{width:230px;background:var(--adm-side);color:#eee;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.adm-brand{padding:1.3rem 1.2rem;font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--gold);border-bottom:1px solid rgba(255,255,255,.08)}
+.adm-brand small{display:block;font-family:var(--sans);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:#8c8f94;margin-top:.2rem}
+.adm-menu-item{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.2rem;color:#c3c4c7;font-size:.83rem;cursor:pointer;border-left:3px solid transparent;transition:all .2s}
+.adm-menu-item i{font-size:1rem;width:18px;text-align:center}
+.adm-menu-item:hover{background:var(--adm-side2);color:#fff}
+.adm-menu-item.active{background:var(--adm-side2);color:var(--gold);border-left-color:var(--gold)}
+.adm-main{flex:1;min-width:0}
+.adm-topbar{background:#fff;border-bottom:1px solid #dcdcde;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.adm-topbar h5{font-weight:600;font-size:1rem;margin:0;color:#1d2327}
+.btn-adm-outline{background:#fff;border:1px solid #c3c4c7;color:#3c434a;padding:.45rem 1rem;border-radius:3px;font-size:.8rem;transition:all .2s}
+.btn-adm-outline:hover{border-color:var(--gold);color:#8a6d1f}
+.btn-adm-gold{background:var(--gold);border:1px solid var(--gold);color:#1d2327;font-weight:600;padding:.45rem 1.2rem;border-radius:3px;font-size:.8rem;transition:all .2s}
+.btn-adm-gold:hover{background:var(--gold2);border-color:var(--gold2)}
+.adm-content{padding:2rem;max-width:980px}
+.adm-panel-card{background:#fff;border:1px solid #dcdcde;border-radius:4px;padding:1.6rem 1.8rem;margin-bottom:1.5rem}
+.adm-panel-card h6{font-weight:600;font-size:.95rem;margin-bottom:1.2rem;color:#1d2327;border-bottom:1px solid #f0f0f1;padding-bottom:.7rem}
+.adm-field-label{font-size:.78rem;font-weight:600;color:#1d2327;margin-bottom:.35rem;display:block}
+.adm-field-hint{font-size:.72rem;color:#8c8f94;margin-bottom:.5rem}
+.adm-inp{width:100%;border:1px solid #8c8f94;border-radius:3px;padding:.5rem .7rem;font-size:.85rem;font-family:var(--sans);color:#1d2327;margin-bottom:1rem;outline:none;transition:border-color .2s}
+.adm-inp:focus{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+textarea.adm-inp{resize:vertical;min-height:80px}
+.repeater-item{border:1px solid #dcdcde;border-radius:4px;padding:1.1rem 1.2rem;margin-bottom:1rem;background:#fafafa;position:relative}
+.repeater-item .rm-btn{position:absolute;top:.7rem;right:.7rem;background:none;border:none;color:#b32d2e;font-size:.85rem;cursor:pointer}
+.repeater-item .rm-btn:hover{color:#8a1f20}
+.repeater-num{display:inline-block;background:var(--adm-side);color:var(--gold);font-size:.68rem;font-weight:700;padding:.15rem .5rem;border-radius:2px;margin-bottom:.7rem}
+.add-item-btn{border:1.5px dashed #b3b3b3;background:transparent;color:#3c434a;padding:.6rem 1rem;border-radius:3px;font-size:.82rem;width:100%;transition:all .2s}
+.add-item-btn:hover{border-color:var(--gold);color:#8a6d1f;background:rgba(200,168,75,.05)}
+.adm-toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1d2327;color:#fff;padding:.8rem 1.3rem;border-radius:4px;font-size:.85rem;display:flex;align-items:center;gap:.6rem;z-index:5000;opacity:0;transform:translateY(10px);transition:all .3s;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.adm-toast.show{opacity:1;transform:translateY(0)}
+.adm-toast i{color:var(--gold)}
+@media(max-width:768px){.adm-sidebar{position:fixed;left:-230px;z-index:2000;transition:left .3s}.adm-sidebar.open{left:0}.adm-content{padding:1.2rem}}
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AKSARA STORE APP — scoped the same way, to its own #appView root.
+   ══════════════════════════════════════════════════════════════════ */
+@scope (#appView) {
     /* ── NAVBAR ── */
     .navbar{position:fixed;top:0;width:100%;z-index:1000;padding:1.2rem 0;transition:all .4s}
     .navbar.scrolled{background:rgba(8,8,15,.93);backdrop-filter:blur(24px);padding:.8rem 0;border-bottom:1px solid var(--border)}
@@ -384,6 +556,9 @@
     .icon-btn:hover{border-color:var(--gold);color:var(--gold)}
     .icon-btn.danger:hover{border-color:var(--red);color:var(--red)}
 
+    .back-to-landing{background:transparent;border:1px solid var(--border);color:var(--muted);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .3s}
+    .back-to-landing:hover{border-color:var(--gold);color:var(--gold);transform:translateX(-2px)}
+
     .btn-admin{background:var(--gold);color:#08080f;border:none;padding:.6rem 1.3rem;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;font-family:var(--sans)}
     .btn-admin:hover{background:var(--gold2)}
     .btn-admin-outline{background:transparent;color:var(--text);border:1px solid var(--border);padding:.6rem 1.3rem;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .3s;font-family:var(--sans)}
@@ -400,9 +575,756 @@
       .admin-table{display:block;overflow-x:auto;white-space:nowrap}
       .nav-user-name{display:none}
     }
-  </style>
+}
+</style>
 </head>
 <body>
+
+<!-- ══════════════════════════ LANDING + CMS SCOPE ══════════════════════════ -->
+<div id="landingScope">
+
+<!-- ══════════════════════════ LANDING PAGE ══════════════════════════ -->
+<div id="landingView">
+
+<nav class="navbar-aks" id="ldNavbar">
+  <div class="container d-flex justify-content-between align-items-center">
+    <a href="#ldBeranda" class="nav-brand">Aksara<sup>Store</sup></a>
+    <div class="d-none d-lg-flex align-items-center gap-2" id="navLinksWrap"></div>
+    <div class="d-flex align-items-center gap-2">
+      <a class="btn-cta-nav" id="navAppBtn" href="#" onclick="goTo('app');return false;">Buka Aplikasi</a>
+      <button class="gear-btn" title="Admin" onclick="goTo('login')"><i class="bi bi-gear"></i></button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="ldBeranda">
+  <div class="hero-ambient"></div>
+  <div class="hero-grid"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="eyebrow rev on"><span class="dot-pulse"></span> <span data-bind="hero.eyebrow"></span></div>
+        <h1 class="hero-h1 rev on"><span data-bind="hero.title_line1"></span> <span class="it" data-bind="hero.title_italic"></span><br/><span data-bind="hero.title_line2"></span></h1>
+        <p class="hero-sub rev on" data-bind="hero.subtitle"></p>
+        <div class="d-flex gap-3 flex-wrap rev on">
+          <a class="btn-gold" id="heroBtnPrimary" href="#fitur" data-bind="hero.btn_primary_text"></a>
+          <a class="btn-ghost" id="heroBtnSecondary" href="#cara-kerja" data-bind="hero.btn_secondary_text"></a>
+        </div>
+        <div class="hero-metrics rev on" id="heroMetrics"></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="books-wrap rev on">
+          <div class="bk bk-l"><div class="bk-face"><div class="bk-ico">📖</div><div class="bk-ttl">Fiksi</div></div></div>
+          <div class="bk bk-r"><div class="bk-face"><div class="bk-ico">🔍</div><div class="bk-ttl">Misteri</div></div></div>
+          <div class="bk bk-main"><div class="bk-face"><div class="bk-ico">✨</div><div class="bk-ttl">Aksara<br/>Store</div></div></div>
+          <div class="fl-badge">Platform Baca</div>
+          <div class="fl-badge2"><i class="bi bi-people-fill"></i> <span data-bind="hero.floating_badge"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker"><div class="ticker-inner" id="tickerTrack"></div></div>
+
+<section class="section" id="tentang">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 rev">
+        <div class="tag-line" data-bind="about.tagline"></div>
+        <h2 class="sec-h"><span data-bind="about.title_pre"></span> <em data-bind="about.title_em"></em></h2>
+        <div class="divider"></div>
+        <p class="muted-p mb-4" data-bind="about.body"></p>
+        <ul class="list-unstyled about-points" id="aboutPoints"></ul>
+      </div>
+      <div class="col-lg-6 rev">
+        <div class="stats-band" id="statsGrid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="fitur">
+  <div class="container">
+    <div class="text-center mb-5 rev">
+      <div class="tag-line mx-auto" style="justify-content:center" data-bind="features.tagline"></div>
+      <h2 class="sec-h"><span data-bind="features.title_pre"></span> <em data-bind="features.title_em"></em></h2>
+      <div class="divider mx-auto"></div>
+      <p class="muted-p mt-2" data-bind="features.subtitle"></p>
+    </div>
+    <div class="row g-4" id="featuresGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="cara-kerja">
+  <div class="container">
+    <div class="text-center mb-5 rev">
+      <div class="tag-line mx-auto" style="justify-content:center" data-bind="steps.tagline"></div>
+      <h2 class="sec-h"><span data-bind="steps.title_pre"></span> <em data-bind="steps.title_em"></em></h2>
+      <div class="divider mx-auto"></div>
+      <p class="muted-p mt-2" data-bind="steps.subtitle"></p>
+    </div>
+    <div class="row g-4" id="stepsGrid"></div>
+  </div>
+</section>
+
+<section class="section section-alt" id="ldTestimoni">
+  <div class="container">
+    <div class="text-center mb-5 rev">
+      <div class="tag-line mx-auto" style="justify-content:center" data-bind="testimonials.tagline"></div>
+      <h2 class="sec-h"><span data-bind="testimonials.title_pre"></span> <em data-bind="testimonials.title_em"></em></h2>
+      <div class="divider mx-auto"></div>
+    </div>
+    <div class="row g-4" id="testimonialsGrid"></div>
+  </div>
+</section>
+
+<section class="section" id="ldFaq">
+  <div class="container">
+    <div class="text-center mb-5 rev">
+      <div class="tag-line mx-auto" style="justify-content:center" data-bind="faq.tagline"></div>
+      <h2 class="sec-h"><span data-bind="faq.title_pre"></span> <em data-bind="faq.title_em"></em></h2>
+      <div class="divider mx-auto"></div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div id="faqList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="cta-band rev">
+      <div class="tag-line mx-auto" style="justify-content:center" data-bind="cta.tagline"></div>
+      <h2 class="sec-h mb-3" data-bind="cta.title"></h2>
+      <p class="muted-p mx-auto mb-4" style="max-width:500px" data-bind="cta.subtitle"></p>
+      <a class="btn-gold" id="ctaBtn" href="#" onclick="goTo('app');return false;" data-bind="cta.button_text"></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer-aks">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="nav-brand mb-3">Aksara<sup>Store</sup></div>
+        <p class="muted-p" data-bind="footer.about_text"></p>
+      </div>
+      <div class="col-6 col-lg-2">
+        <div class="footer-h">Navigasi</div>
+        <div id="footerNav"></div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="footer-h">Kontak</div>
+        <div class="footer-link"><i class="bi bi-envelope me-1"></i> <span data-bind="footer.contact_email"></span></div>
+        <div class="footer-link"><i class="bi bi-whatsapp me-1"></i> <span data-bind="footer.contact_phone"></span></div>
+        <div class="footer-link"><i class="bi bi-geo-alt me-1"></i> <span data-bind="footer.contact_address"></span></div>
+      </div>
+      <div class="col-lg-3">
+        <div class="footer-h">Ikuti Kami</div>
+        <div class="d-flex gap-2">
+          <a href="#" class="gear-btn" style="border-radius:2px"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="gear-btn" style="border-radius:2px"><i class="bi bi-tiktok"></i></a>
+          <a href="#" class="gear-btn" style="border-radius:2px"><i class="bi bi-twitter-x"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-bind="footer.copyright"></span>
+      <a href="#" class="admin-link-foot" onclick="goTo('login');return false;">Admin Panel</a>
+    </div>
+  </div>
+</footer>
+</div>
+
+<!-- ══════════════════════════ ADMIN LOGIN ══════════════════════════ -->
+<div id="adminLoginView" class="hidden">
+  <div class="login-card">
+    <div class="nav-brand">Aksara<sup style="color:var(--muted)">Store</sup></div>
+    <div class="login-sub">Admin Panel Login</div>
+    <div class="login-hint"><i class="bi bi-info-circle me-1"></i> Demo: <strong>admin</strong> / <strong>admin123</strong></div>
+    <div class="login-err" id="ldLoginErr">Username atau password salah.</div>
+    <label class="f-label">Username</label>
+    <input class="f-inp" id="loginUser" type="text" placeholder="admin"/>
+    <label class="f-label">Password</label>
+    <input class="f-inp" id="loginPass" type="password" placeholder="••••••••"/>
+    <button class="btn-gold w-100" onclick="cmsDoLogin()">Masuk</button>
+    <a href="#" class="back-to-site" onclick="goTo('landing');return false;"><i class="bi bi-arrow-left"></i> Kembali ke Situs</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════ ADMIN PANEL ══════════════════════════ -->
+<div id="adminPanelView" class="hidden">
+  <div class="adm-shell">
+    <aside class="adm-sidebar" id="admSidebar">
+      <div class="adm-brand">Aksara<span style="color:#e5c97a">Store</span><small>Content Manager</small></div>
+      <div id="admMenu"></div>
+      <div style="padding:1rem 1.2rem;border-top:1px solid rgba(255,255,255,.08);margin-top:1rem">
+        <div class="adm-menu-item" style="padding-left:0" onclick="doLogout()"><i class="bi bi-box-arrow-left"></i> Keluar</div>
+      </div>
+    </aside>
+    <div class="adm-main">
+      <div class="adm-topbar">
+        <h5 id="admPanelTitle">Hero &amp; Umum</h5>
+        <div class="d-flex gap-2">
+          <button class="btn-adm-outline" onclick="goTo('landing')"><i class="bi bi-box-arrow-up-right"></i> Lihat Situs</button>
+          <button class="btn-adm-outline" onclick="resetContent()"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+          <button class="btn-adm-gold" onclick="saveContent()"><i class="bi bi-check2"></i> Simpan Perubahan</button>
+        </div>
+      </div>
+      <div class="adm-content" id="admContent"></div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-toast" id="admToast"><i class="bi bi-check-circle-fill"></i> <span id="admToastMsg">Tersimpan</span></div>
+
+</div>
+<!-- ══════════════════════════ /LANDING + CMS SCOPE ══════════════════════════ -->
+
+<script>
+/* ═══════════════════════════ DEFAULT CONTENT ═══════════════════════════ */
+const DEFAULT_CONTENT = {
+  nav: [
+    {label:"Beranda",href:"#ldBeranda"},
+    {label:"Tentang",href:"#tentang"},
+    {label:"Fitur",href:"#fitur"},
+    {label:"Cara Kerja",href:"#cara-kerja"},
+    {label:"FAQ",href:"#ldFaq"}
+  ],
+  hero: {
+    eyebrow:"Platform Baca Digital",
+    title_line1:"Perpustakaan",
+    title_italic:"Digital",
+    title_line2:"Dalam Genggaman",
+    subtitle:"Aksara Store adalah platform baca novel digital yang menghadirkan ratusan judul cerita lintas genre ke ujung jarimu — rapi, cepat, dan nyaman digunakan kapan saja.",
+    btn_primary_text:"Jelajahi Fitur",
+    btn_secondary_text:"Lihat Cara Kerja",
+    floing_placeholder:"",
+    floating_badge:"12.000+ Pengguna",
+    metrics:[
+      {value:"500+",label:"Judul Novel"},
+      {value:"12K+",label:"Pengguna Terdaftar"},
+      {value:"4.9",label:"Rating Rata-rata"}
+    ]
+  },
+  ticker:[
+    "Platform Baca Terpercaya","Ratusan Judul Novel","Mendukung Penulis Lokal",
+    "Baca di Semua Perangkat","Koleksi Terus Diperbarui"
+  ],
+  about:{
+    tagline:"Tentang Kami",
+    title_pre:"Apa Itu",
+    title_em:"Aksara Store?",
+    body:"Aksara Store adalah platform digital yang dirancang untuk menemani kebiasaan membaca masa kini. Kami menghimpun koleksi novel dari berbagai genre dalam satu tempat, dengan tampilan yang nyaman dipakai dan pengalaman baca yang konsisten di semua perangkat.",
+    points:[
+      "Katalog novel digital lintas genre yang terus diperbarui",
+      "Pengalaman baca yang konsisten di HP, tablet, maupun laptop",
+      "Sistem pencarian dan filter yang memudahkan menemukan bacaan",
+      "Ruang bagi penulis lokal untuk menjangkau lebih banyak pembaca"
+    ]
+  },
+  features:{
+    tagline:"Kenapa Aksara Store",
+    title_pre:"Dibangun Untuk",
+    title_em:"Kenyamanan Membaca",
+    subtitle:"Setiap fitur dirancang supaya aktivitas membacamu lebih praktis dan menyenangkan.",
+    items:[
+      {icon:"bi-lightning-charge",title:"Akses Cepat",desc:"Antarmuka ringan dan responsif membuat kamu bisa langsung menemukan dan membuka novel yang ingin dibaca tanpa hambatan."},
+      {icon:"bi-phone",title:"Lintas Perangkat",desc:"Rak bacaanmu tersimpan rapi dan bisa diakses dari HP, tablet, maupun laptop dengan tampilan yang selalu konsisten."},
+      {icon:"bi-search",title:"Pencarian Cerdas",desc:"Fitur cari dan filter berdasarkan genre membantu kamu menemukan bacaan yang sesuai selera dalam hitungan detik."},
+      {icon:"bi-shield-check",title:"Privasi Terjaga",desc:"Data akun dan aktivitas membacamu dikelola dengan standar keamanan yang ketat dan tidak dibagikan sembarangan."},
+      {icon:"bi-heart",title:"Dukung Penulis Lokal",desc:"Platform ini menjadi ruang bagi karya-karya penulis lokal untuk ditemukan oleh lebih banyak pembaca di seluruh Indonesia."},
+      {icon:"bi-headset",title:"Dukungan Responsif",desc:"Tim kami siap membantu lewat WhatsApp dan email apabila kamu mengalami kendala saat menggunakan platform."}
+    ]
+  },
+  steps:{
+    tagline:"Cara Kerja",
+    title_pre:"Mulai Membaca",
+    title_em:"Dalam 3 Langkah",
+    subtitle:"Alur yang simpel supaya kamu bisa fokus menikmati cerita, bukan sibuk dengan teknis.",
+    items:[
+      {icon:"bi-person-plus",title:"Buat Akun",desc:"Daftar dengan nama dan email untuk membuat profil pembacamu di Aksara Store."},
+      {icon:"bi-grid",title:"Jelajahi Katalog",desc:"Telusuri koleksi novel berdasarkan genre, rating, atau kata kunci yang kamu inginkan."},
+      {icon:"bi-book-half",title:"Baca Kapan Saja",desc:"Buka rak bacaanmu dan lanjutkan cerita dari perangkat mana pun, di mana pun kamu berada."}
+    ]
+  },
+  testimonials:{
+    tagline:"Bukan Janji Kami",
+    title_pre:"Ini Kata",
+    title_em:"Mereka",
+    items:[
+      {name:"Anisa Putri",role:"Pembaca Aktif · Jakarta",stars:5,text:"Koleksinya lengkap banget dan tampilannya nyaman dipakai. Aku bisa lanjut baca dari HP ke laptop tanpa ribet sama sekali."},
+      {name:"Rizky Firmansyah",role:"Mahasiswa · Yogyakarta",stars:5,text:"Sebagai mahasiswa, platform ini praktis banget. Genre-nya beragam, jadi cocok untuk semua selera bacaan."},
+      {name:"Sinta Maharani",role:"Guru · Bandung",stars:5,text:"Tampilan webnya rapi dan pencariannya cepat. Sekarang Aksara Store jadi tempat utamaku cari bacaan baru."}
+    ]
+  },
+  faq:{
+    tagline:"Pertanyaan Umum",
+    title_pre:"Masih Ada",
+    title_em:"Pertanyaan?",
+    items:[
+      {q:"Perangkat apa saja yang didukung Aksara Store?",a:"Aksara Store bisa diakses melalui browser di HP, tablet, maupun laptop tanpa perlu memasang aplikasi tambahan."},
+      {q:"Apakah saya perlu membuat akun untuk membaca?",a:"Ya, akun diperlukan agar rak bacaan dan riwayat aktivitasmu tersimpan dan bisa diakses kembali kapan pun."},
+      {q:"Apakah koleksi novel terus bertambah?",a:"Tim kami secara rutin menambahkan judul baru dari berbagai genre agar katalog tetap segar dan beragam."},
+      {q:"Bagaimana jika saya mengalami kendala teknis?",a:"Kamu bisa menghubungi tim dukungan kami melalui WhatsApp atau email yang tertera di bagian kontak."}
+    ]
+  },
+  cta:{
+    tagline:"Bergabung Sekarang",
+    title:"Siap Menjelajahi Dunia Cerita?",
+    subtitle:"Temukan novel favoritmu berikutnya di Aksara Store.",
+    button_text:"Mulai Jelajahi"
+  },
+  footer:{
+    about_text:"Platform baca novel digital yang menghadirkan koleksi cerita lintas genre dengan pengalaman membaca yang nyaman di semua perangkat.",
+    contact_email:"halo@aksarastore.id",
+    contact_phone:"+62 812-3456-7890",
+    contact_address:"Yogyakarta, Indonesia",
+    copyright:"© 2026 Aksara Store. Seluruh hak cipta dilindungi."
+  }
+};
+
+const STORAGE_KEY = "aksaraLandingContent_v1";
+const CRED_KEY = "aksaraAdminCreds_v1";
+let content = loadContent();
+let draft = JSON.parse(JSON.stringify(content));
+
+function loadContent(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return deepMerge(JSON.parse(JSON.stringify(DEFAULT_CONTENT)), JSON.parse(raw));
+  }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+}
+function deepMerge(base, extra){
+  if(Array.isArray(extra)) return extra;
+  if(typeof extra !== 'object' || extra===null) return extra===undefined? base : extra;
+  const out = Object.assign({}, base);
+  for(const k in extra){ out[k] = deepMerge(base ? base[k] : undefined, extra[k]); }
+  return out;
+}
+function getCreds(){
+  try{
+    const raw = localStorage.getItem(CRED_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const def = {username:"admin", password:"admin123"};
+  localStorage.setItem(CRED_KEY, JSON.stringify(def));
+  return def;
+}
+
+/* ═══════════════════════════ RENDER LANDING ═══════════════════════════ */
+function get(obj, path){ return path.split('.').reduce((o,k)=> (o==null? undefined : o[k]), obj); }
+
+function renderLanding(){
+  document.querySelectorAll('[data-bind]').forEach(el=>{
+    const val = get(content, el.getAttribute('data-bind'));
+    if(val !== undefined) el.textContent = val;
+  });
+  document.getElementById('heroBtnPrimary').textContent = content.hero.btn_primary_text;
+  document.getElementById('heroBtnSecondary').textContent = content.hero.btn_secondary_text;
+
+  // nav
+  const navWrap = document.getElementById('navLinksWrap');
+  navWrap.innerHTML = content.nav.map(n=>`<a class="nav-link-i" href="${escAttr(n.href)}">${esc(n.label)}</a>`).join('');
+  const footerNav = document.getElementById('footerNav');
+  footerNav.innerHTML = content.nav.map(n=>`<a class="footer-link" href="${escAttr(n.href)}">${esc(n.label)}</a>`).join('');
+
+  // ticker
+  const tickerItems = content.ticker.map(t=>`<span><i class="bi bi-star-fill me-1"></i>${esc(t)}</span>`).join('');
+  document.getElementById('tickerTrack').innerHTML = tickerItems + tickerItems;
+
+  // hero metrics
+  document.getElementById('heroMetrics').innerHTML = content.hero.metrics.map(m=>`
+    <div><div class="mval">${esc(m.value)}</div><div class="mlbl">${esc(m.label)}</div></div>`).join('');
+
+  // about points
+  document.getElementById('aboutPoints').innerHTML = content.about.points.map(p=>`
+    <li><i class="bi bi-check-circle-fill"></i><span>${esc(p)}</span></li>`).join('');
+
+  // stats band (reuse hero metrics as platform stats display)
+  document.getElementById('statsGrid').innerHTML = content.hero.metrics.map((m,i)=>`
+    ${i>0?'<div class="stat-sep"></div>':''}<div class="stat-item"><div class="v">${esc(m.value)}</div><div class="l">${esc(m.label)}</div></div>`).join('');
+
+  // features
+  document.getElementById('featuresGrid').innerHTML = content.features.items.map(f=>`
+    <div class="col-md-6 col-lg-4 rev on">
+      <div class="feat-card">
+        <span class="feat-ico"><i class="bi ${escAttr(f.icon)}"></i></span>
+        <h5 class="feat-title">${esc(f.title)}</h5>
+        <p class="feat-desc">${esc(f.desc)}</p>
+      </div>
+    </div>`).join('');
+
+  // steps
+  document.getElementById('stepsGrid').innerHTML = content.steps.items.map((s,i)=>`
+    <div class="col-md-4 rev on">
+      <div class="step-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="step-icon"><i class="bi ${escAttr(s.icon)}"></i></div>
+      <div class="step-title">${esc(s.title)}</div>
+      <div class="step-desc">${esc(s.desc)}</div>
+    </div>`).join('');
+
+  // testimonials
+  document.getElementById('testimonialsGrid').innerHTML = content.testimonials.items.map(t=>`
+    <div class="col-md-6 col-lg-4 rev on">
+      <div class="t-card">
+        <div class="t-q">"</div>
+        <div class="t-stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</div>
+        <p class="t-text">${esc(t.text)}</p>
+        <div class="d-flex align-items-center">
+          <div class="t-av">${esc((t.name||'?').charAt(0))}</div>
+          <div><div class="t-name">${esc(t.name)}</div><div class="t-role">${esc(t.role)}</div></div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // faq
+  document.getElementById('faqList').innerHTML = content.faq.items.map((f,i)=>`
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>${esc(f.q)}</span><i class="bi bi-plus-lg faq-icon"></i></div>
+      <div class="faq-a">${esc(f.a)}</div>
+    </div>`).join('');
+
+  document.getElementById('ctaBtn').textContent = content.cta.button_text;
+
+  document.querySelectorAll('.rev').forEach(el=>el.classList.add('on'));
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escAttr(s){ return esc(s); }
+
+/* ═══════════════════════════ VIEW SWITCHING ═══════════════════════════
+   Three "pages" live in this one file: the marketing landing page, the
+   CMS admin login/panel (for editing the landing page's text), and the
+   full Aksara Store app. goTo() swaps which one is visible. */
+function goTo(view){
+  document.getElementById('landingView').classList.add('hidden');
+  document.getElementById('adminLoginView').classList.add('hidden');
+  document.getElementById('adminPanelView').classList.add('hidden');
+  document.getElementById('appView').classList.add('hidden');
+  document.getElementById('ldLoginErr').classList.remove('show');
+  window.scrollTo(0,0);
+  if(view==='landing'){
+    document.getElementById('landingView').classList.remove('hidden');
+    renderLanding();
+  } else if(view==='login'){
+    if(sessionStorage.getItem('aksaraAdminAuth')==='1'){ goTo('admin'); return; }
+    document.getElementById('adminLoginView').classList.remove('hidden');
+  } else if(view==='admin'){
+    if(sessionStorage.getItem('aksaraAdminAuth')!=='1'){ goTo('login'); return; }
+    document.getElementById('adminPanelView').classList.remove('hidden');
+    draft = JSON.parse(JSON.stringify(content));
+    renderAdminMenu();
+    cmsSwitchAdminTab('hero');
+  } else if(view==='app'){
+    document.getElementById('appView').classList.remove('hidden');
+  }
+}
+
+function cmsDoLogin(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const creds = getCreds();
+  if(u===creds.username && p===creds.password){
+    sessionStorage.setItem('aksaraAdminAuth','1');
+    goTo('admin');
+  } else {
+    document.getElementById('ldLoginErr').classList.add('show');
+  }
+}
+function doLogout(){
+  sessionStorage.removeItem('aksaraAdminAuth');
+  goTo('landing');
+}
+
+/* ═══════════════════════════ ADMIN PANEL ═══════════════════════════ */
+const ADMIN_TABS = [
+  {key:'hero', label:'Hero & Umum', icon:'bi-house-door'},
+  {key:'about', label:'Tentang Platform', icon:'bi-info-circle'},
+  {key:'features', label:'Fitur Unggulan', icon:'bi-stars'},
+  {key:'steps', label:'Cara Kerja', icon:'bi-list-ol'},
+  {key:'testimonials', label:'Testimoni', icon:'bi-chat-quote'},
+  {key:'faq', label:'FAQ', icon:'bi-question-circle'},
+  {key:'ctafooter', label:'CTA & Footer', icon:'bi-layout-text-sidebar-reverse'},
+  {key:'nav', label:'Menu Navigasi', icon:'bi-list'}
+];
+let currentTab = 'hero';
+
+function renderAdminMenu(){
+  document.getElementById('admMenu').innerHTML = ADMIN_TABS.map(t=>`
+    <div class="adm-menu-item ${t.key===currentTab?'active':''}" onclick="cmsSwitchAdminTab('${t.key}')">
+      <i class="bi ${t.icon}"></i> ${t.label}
+    </div>`).join('');
+}
+function cmsSwitchAdminTab(key){
+  currentTab = key;
+  renderAdminMenu();
+  const tabInfo = ADMIN_TABS.find(t=>t.key===key);
+  document.getElementById('admPanelTitle').textContent = tabInfo.label;
+  const c = document.getElementById('admContent');
+  if(key==='hero') c.innerHTML = tplHero();
+  else if(key==='about') c.innerHTML = tplAbout();
+  else if(key==='features') c.innerHTML = tplRepeaterSection('features','Fitur');
+  else if(key==='steps') c.innerHTML = tplRepeaterSection('steps','Langkah');
+  else if(key==='testimonials') c.innerHTML = tplTestimonials();
+  else if(key==='faq') c.innerHTML = tplFaq();
+  else if(key==='ctafooter') c.innerHTML = tplCtaFooter();
+  else if(key==='nav') c.innerHTML = tplNav();
+}
+
+function field(path, label, type, hint){
+  const val = get(draft, path) ?? '';
+  const inputEl = type==='textarea'
+    ? `<textarea class="adm-inp" rows="3" data-path="${path}" oninput="updateDraft(this)">${esc(val)}</textarea>`
+    : `<input class="adm-inp" type="text" value="${escAttr(val)}" data-path="${path}" oninput="updateDraft(this)"/>`;
+  return `<div><label class="adm-field-label">${label}</label>${hint?`<div class="adm-field-hint">${hint}</div>`:''}${inputEl}</div>`;
+}
+function updateDraft(el){
+  const path = el.getAttribute('data-path');
+  const keys = path.split('.');
+  let obj = draft;
+  for(let i=0;i<keys.length-1;i++){
+    const k = keys[i];
+    if(/^\d+$/.test(keys[i+1]) && !Array.isArray(obj[k])) obj[k] = obj[k] || [];
+    obj = obj[k];
+  }
+  obj[keys[keys.length-1]] = el.value;
+}
+
+function tplHero(){
+  const h = draft.hero;
+  let metricsHtml = h.metrics.map((m,i)=>`
+    <div class="repeater-item">
+      <button class="rm-btn" onclick="removeArrItem('hero.metrics',${i})"><i class="bi bi-trash3"></i></button>
+      <div class="repeater-num">Statistik ${i+1}</div>
+      <div class="row g-3">
+        <div class="col-6">${field(`hero.metrics.${i}.value`,'Nilai')}</div>
+        <div class="col-6">${field(`hero.metrics.${i}.label`,'Label')}</div>
+      </div>
+    </div>`).join('');
+  return `
+  <div class="adm-panel-card">
+    <h6>Bagian Hero</h6>
+    <div class="row g-3">
+      <div class="col-md-6">${field('hero.eyebrow','Label Kecil (Eyebrow)')}</div>
+      <div class="col-md-6">${field('hero.floating_badge','Badge Melayang')}</div>
+      <div class="col-md-4">${field('hero.title_line1','Judul Baris 1')}</div>
+      <div class="col-md-4">${field('hero.title_italic','Judul Kata Miring')}</div>
+      <div class="col-md-4">${field('hero.title_line2','Judul Baris 2')}</div>
+      <div class="col-12">${field('hero.subtitle','Deskripsi Hero','textarea')}</div>
+      <div class="col-md-6">${field('hero.btn_primary_text','Teks Tombol Utama')}</div>
+      <div class="col-md-6">${field('hero.btn_secondary_text','Teks Tombol Kedua')}</div>
+    </div>
+  </div>
+  <div class="adm-panel-card">
+    <h6>Statistik Platform</h6>
+    ${metricsHtml}
+    <button class="add-item-btn" onclick="addArrItem('hero.metrics',{value:'0',label:'Label Baru'})"><i class="bi bi-plus-lg"></i> Tambah Statistik</button>
+  </div>`;
+}
+
+function tplAbout(){
+  const points = draft.about.points.map((p,i)=>`
+    <div class="repeater-item">
+      <button class="rm-btn" onclick="removeArrItem('about.points',${i})"><i class="bi bi-trash3"></i></button>
+      <div class="repeater-num">Poin ${i+1}</div>
+      ${field(`about.points.${i}`,'Isi Poin')}
+    </div>`).join('');
+  return `
+  <div class="adm-panel-card">
+    <h6>Bagian Tentang</h6>
+    <div class="row g-3">
+      <div class="col-md-6">${field('about.tagline','Label Kecil')}</div>
+      <div class="col-md-3">${field('about.title_pre','Judul (awal)')}</div>
+      <div class="col-md-3">${field('about.title_em','Judul (ditekankan)')}</div>
+      <div class="col-12">${field('about.body','Deskripsi','textarea')}</div>
+    </div>
+  </div>
+  <div class="adm-panel-card">
+    <h6>Poin Keunggulan</h6>
+    ${points}
+    <button class="add-item-btn" onclick="addArrItem('about.points','Poin baru di sini')"><i class="bi bi-plus-lg"></i> Tambah Poin</button>
+  </div>`;
+}
+
+function tplRepeaterSection(key, itemLabel){
+  const sec = draft[key];
+  const items = sec.items.map((it,i)=>`
+    <div class="repeater-item">
+      <button class="rm-btn" onclick="removeArrItem('${key}.items',${i})"><i class="bi bi-trash3"></i></button>
+      <div class="repeater-num">${itemLabel} ${i+1}</div>
+      <div class="row g-3">
+        <div class="col-md-4">${field(`${key}.items.${i}.icon`,'Ikon (Bootstrap Icon class)','text','Contoh: bi-star, bi-heart, bi-shield-check')}</div>
+        <div class="col-md-8">${field(`${key}.items.${i}.title`,'Judul')}</div>
+        <div class="col-12">${field(`${key}.items.${i}.desc`,'Deskripsi','textarea')}</div>
+      </div>
+    </div>`).join('');
+  return `
+  <div class="adm-panel-card">
+    <h6>Judul Bagian</h6>
+    <div class="row g-3">
+      <div class="col-md-4">${field(`${key}.tagline`,'Label Kecil')}</div>
+      <div class="col-md-4">${field(`${key}.title_pre`,'Judul (awal)')}</div>
+      <div class="col-md-4">${field(`${key}.title_em`,'Judul (ditekankan)')}</div>
+      <div class="col-12">${field(`${key}.subtitle`,'Subjudul','textarea')}</div>
+    </div>
+  </div>
+  <div class="adm-panel-card">
+    <h6>Daftar ${itemLabel}</h6>
+    ${items}
+    <button class="add-item-btn" onclick="addArrItem('${key}.items',{icon:'bi-star',title:'Judul Baru',desc:'Deskripsi baru di sini.'})"><i class="bi bi-plus-lg"></i> Tambah ${itemLabel}</button>
+  </div>`;
+}
+
+function tplTestimonials(){
+  const items = draft.testimonials.items.map((t,i)=>`
+    <div class="repeater-item">
+      <button class="rm-btn" onclick="removeArrItem('testimonials.items',${i})"><i class="bi bi-trash3"></i></button>
+      <div class="repeater-num">Testimoni ${i+1}</div>
+      <div class="row g-3">
+        <div class="col-md-6">${field(`testimonials.items.${i}.name`,'Nama')}</div>
+        <div class="col-md-6">${field(`testimonials.items.${i}.role`,'Peran / Kota')}</div>
+        <div class="col-md-4">${field(`testimonials.items.${i}.stars`,'Rating (1-5)')}</div>
+        <div class="col-12">${field(`testimonials.items.${i}.text`,'Isi Testimoni','textarea')}</div>
+      </div>
+    </div>`).join('');
+  return `
+  <div class="adm-panel-card">
+    <h6>Judul Bagian</h6>
+    <div class="row g-3">
+      <div class="col-md-4">${field('testimonials.tagline','Label Kecil')}</div>
+      <div class="col-md-4">${field('testimonials.title_pre','Judul (awal)')}</div>
+      <div class="col-md-4">${field('testimonials.title_em','Judul (ditekankan)')}</div>
+    </div>
+  </div>
+  <div class="adm-panel-card">
+    <h6>Daftar Testimoni</h6>
+    ${items}
+    <button class="add-item-btn" onclick="addArrItem('testimonials.items',{name:'Nama Baru',role:'Peran · Kota',stars:5,text:'Isi testimoni baru.'})"><i class="bi bi-plus-lg"></i> Tambah Testimoni</button>
+  </div>`;
+}
+
+function tplFaq(){
+  const items = draft.faq.items.map((f,i)=>`
+    <div class="repeater-item">
+      <button class="rm-btn" onclick="removeArrItem('faq.items',${i})"><i class="bi bi-trash3"></i></button>
+      <div class="repeater-num">FAQ ${i+1}</div>
+      ${field(`faq.items.${i}.q`,'Pertanyaan')}
+      ${field(`faq.items.${i}.a`,'Jawaban','textarea')}
+    </div>`).join('');
+  return `
+  <div class="adm-panel-card">
+    <h6>Judul Bagian</h6>
+    <div class="row g-3">
+      <div class="col-md-4">${field('faq.tagline','Label Kecil')}</div>
+      <div class="col-md-4">${field('faq.title_pre','Judul (awal)')}</div>
+      <div class="col-md-4">${field('faq.title_em','Judul (ditekankan)')}</div>
+    </div>
+  </div>
+  <div class="adm-panel-card">
+    <h6>Daftar Pertanyaan</h6>
+    ${items}
+    <button class="add-item-btn" onclick="addArrItem('faq.items',{q:'Pertanyaan baru?',a:'Jawaban untuk pertanyaan baru.'})"><i class="bi bi-plus-lg"></i> Tambah FAQ</button>
+  </div>`;
+}
+
+function tplCtaFooter(){
+  return `
+  <div class="adm-panel-card">
+    <h6>Bagian Ajakan (CTA)</h6>
+    <div class="row g-3">
+      <div class="col-md-4">${field('cta.tagline','Label Kecil')}</div>
+      <div class="col-md-4">${field('cta.title','Judul')}</div>
+      <div class="col-md-4">${field('cta.button_text','Teks Tombol')}</div>
+      <div class="col-12">${field('cta.subtitle','Subjudul','textarea')}</div>
+    </div>
+  </div>
+  <div class="adm-panel-card">
+    <h6>Footer</h6>
+    <div class="row g-3">
+      <div class="col-12">${field('footer.about_text','Deskripsi Singkat','textarea')}</div>
+      <div class="col-md-4">${field('footer.contact_email','Email')}</div>
+      <div class="col-md-4">${field('footer.contact_phone','Telepon / WhatsApp')}</div>
+      <div class="col-md-4">${field('footer.contact_address','Alamat')}</div>
+      <div class="col-12">${field('footer.copyright','Teks Hak Cipta')}</div>
+    </div>
+  </div>`;
+}
+
+function tplNav(){
+  const items = draft.nav.map((n,i)=>`
+    <div class="repeater-item">
+      <button class="rm-btn" onclick="removeArrItem('nav',${i})"><i class="bi bi-trash3"></i></button>
+      <div class="repeater-num">Menu ${i+1}</div>
+      <div class="row g-3">
+        <div class="col-md-6">${field(`nav.${i}.label`,'Label Menu')}</div>
+        <div class="col-md-6">${field(`nav.${i}.href`,'Tautan (contoh: #fitur)')}</div>
+      </div>
+    </div>`).join('');
+  return `
+  <div class="adm-panel-card">
+    <h6>Menu Navigasi</h6>
+    ${items}
+    <button class="add-item-btn" onclick="addArrItem('nav',{label:'Menu Baru',href:'#'})"><i class="bi bi-plus-lg"></i> Tambah Menu</button>
+  </div>`;
+}
+
+function addArrItem(path, defaultVal){
+  const keys = path.split('.');
+  let obj = draft;
+  for(let i=0;i<keys.length-1;i++) obj = obj[keys[i]];
+  const arr = obj[keys[keys.length-1]];
+  arr.push(typeof defaultVal==='object'? JSON.parse(JSON.stringify(defaultVal)) : defaultVal);
+  cmsSwitchAdminTab(currentTab);
+}
+function removeArrItem(path, idx){
+  const keys = path.split('.');
+  let obj = draft;
+  for(let i=0;i<keys.length-1;i++) obj = obj[keys[i]];
+  obj[keys[keys.length-1]].splice(idx,1);
+  cmsSwitchAdminTab(currentTab);
+}
+
+function saveContent(){
+  content = JSON.parse(JSON.stringify(draft));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+  showToast('Perubahan berhasil disimpan');
+  renderLanding();
+}
+function resetContent(){
+  if(!confirm('Kembalikan semua teks landing page ke pengaturan awal? Perubahan yang belum disimpan akan hilang.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  content = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+  draft = JSON.parse(JSON.stringify(content));
+  cmsSwitchAdminTab(currentTab);
+  renderLanding();
+  showToast('Konten dikembalikan ke pengaturan awal');
+}
+function showToast(msg){
+  const t = document.getElementById('admToast');
+  document.getElementById('admToastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+/* ═══════════════════════════ INIT ═══════════════════════════ */
+window.addEventListener('scroll', ()=>{
+  const nb = document.getElementById('ldNavbar');
+  if(nb) nb.classList.toggle('scrolled', window.scrollY > 60);
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && !document.getElementById('adminLoginView').classList.contains('hidden')) goTo('landing');
+});
+
+renderLanding();
+goTo('landing');
+</script>
+
+<!-- ══════════════════════════ AKSARA STORE APP ══════════════════════════ -->
+<div id="appView" class="hidden">
 
 <!-- ═══ TOP BAR ═══ -->
 <div id="topBar" style="background:var(--gold);color:#08080f;text-align:center;padding:.5rem 1rem;font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;position:relative;z-index:1001">
@@ -416,7 +1338,10 @@
 <nav class="navbar" id="navbar">
   <div class="container">
     <div class="d-flex align-items-center justify-content-between w-100">
-      <a href="#" class="nav-brand">Aksara<sup>store</sup></a>
+      <div class="d-flex align-items-center gap-3">
+        <a href="#" class="back-to-landing" title="Kembali ke Landing Page" onclick="goTo('landing');return false;"><i class="bi bi-arrow-left"></i></a>
+        <a href="#" class="nav-brand">Aksara<sup>store</sup></a>
+      </div>
       <div class="d-none d-lg-flex align-items-center gap-1">
         <a href="#cara-beli" class="nav-link-i">Cara Beli</a>
         <a href="#katalog" class="nav-link-i">Katalog</a>
@@ -442,6 +1367,7 @@
     </div>
     <div class="collapse d-lg-none mt-3" id="mNav">
       <div class="d-flex flex-column gap-2 pb-3" style="border-top:1px solid var(--border);padding-top:1rem">
+        <a href="#" class="nav-link-i" onclick="goTo('landing');return false;"><i class="bi bi-arrow-left me-1"></i> Landing Page</a>
         <a href="#cara-beli" class="nav-link-i">Cara Beli</a>
         <a href="#katalog" class="nav-link-i">Katalog</a>
         <a href="#keunggulan" class="nav-link-i">Keunggulan</a>
@@ -453,80 +1379,26 @@
   </div>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="beranda">
+<!-- ═══ HERO (RINGKAS) ═══ -->
+<section class="hero" id="beranda" style="min-height:56vh;padding:7.5rem 0 3rem">
   <div class="hero-ambient"></div>
   <div class="hero-grid"></div>
-  <div class="container">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-6">
-        <div class="eyebrow"><span class="dot-pulse"></span>Platform Novel Digital Terpercaya Indonesia</div>
-        <h1 class="hero-h1">Baca Novel<br/><span class="it">Favorit</span> Kini<br/><span class="ol">Lebih Mudah</span></h1>
-        <p class="hero-sub">Nikmati pengalaman membaca novel digital kapan saja dan di mana saja hanya melalui satu platform. Tidak perlu nunggu pengiriman atau bawa buku tebal ke mana-mana.</p>
-        <div class="hero-aida-points" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
-          <div style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--text)"><span style="color:var(--gold);font-size:.9rem">✦</span> Berbagai genre: Romance, Fantasy, Mystery, hingga Thriller</div>
-          <div style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--text)"><span style="color:var(--gold);font-size:.9rem">✦</span> Harga terjangkau mulai Rp 28.000 — lebih hemat dari buku fisik</div>
-          <div style="display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--text)"><span style="color:var(--gold);font-size:.9rem">✦</span> Akses instan — cukup download dan langsung baca dari HP atau laptop</div>
-        </div>
-        <div class="hero-btns d-flex flex-wrap gap-3">
-          <a href="#katalog" class="btn-gold"><i class="bi bi-book me-2"></i>Temukan Ceritamu Sekarang</a>
-          <a href="#cara-beli" class="btn-ghost"><i class="bi bi-play-circle me-2"></i>Cara Beli</a>
-        </div>
-        <div class="hero-metrics">
-          <div><div class="mval">500+</div><div class="mlbl">Judul Novel</div></div>
-          <div><div class="mval">12K+</div><div class="mlbl">Pembaca</div></div>
-          <div><div class="mval">4.9★</div><div class="mlbl">Rating</div></div>
-          <div><div class="mval">50+</div><div class="mlbl">Penulis</div></div>
-        </div>
-      </div>
-      <div class="col-lg-6 d-flex justify-content-center">
-        <div style="position:relative">
-          <div class="books-wrap">
-            <div class="bk bk-l">
-              <div class="bk-face" style="background:linear-gradient(160deg,#0a1628,#1a3a5c)">
-                <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 30%,rgba(100,180,255,.1),transparent)"></div>
-                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(126,200,227,.4),transparent)"></div>
-                <div style="font-size:.45rem;letter-spacing:2px;text-transform:uppercase;color:rgba(126,200,227,.5);margin-bottom:.4rem;position:relative;z-index:1">NOVEL FANTASY</div>
-                <div class="bk-ico">⚔️</div>
-                <div class="bk-ttl" style="color:#7ec8e3">Negeri di Atas Awan</div>
-                <div style="width:30px;height:1px;background:rgba(126,200,227,.3);margin:.4rem auto;position:relative;z-index:1"></div>
-                <div class="bk-aut" style="color:#7ec8e3">Sekar Ayu</div>
-                <div style="position:absolute;bottom:.6rem;left:0;right:0;text-align:center;font-size:.42rem;letter-spacing:1.5px;color:rgba(126,200,227,.35);text-transform:uppercase">Aksara Store</div>
-              </div>
-            </div>
-            <div class="bk bk-main">
-              <div class="bk-face" style="background:linear-gradient(160deg,#1a0c2e,#3d1560,#2d1040)">
-                <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(200,168,75,.12),transparent)"></div>
-                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.5),transparent)"></div>
-                <div style="position:absolute;top:.7rem;left:0;right:0;text-align:center;font-size:.45rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,168,75,.6);z-index:1">NOVEL ROMANCE</div>
-                <div class="bk-ico" style="font-size:2.8rem;margin-top:.4rem">🌹</div>
-                <div class="bk-ttl" style="color:var(--gold);font-size:1.05rem">Satu Musim<br/>Bersamamu</div>
-                <div style="width:35px;height:1px;background:rgba(200,168,75,.4);margin:.5rem auto;position:relative;z-index:1"></div>
-                <div class="bk-aut" style="color:var(--gold)">Dira Kusuma</div>
-                <div style="position:absolute;bottom:.6rem;right:.7rem;font-size:.48rem;color:var(--gold);border:1px solid rgba(200,168,75,.3);padding:.15rem .4rem;letter-spacing:1px;z-index:1">EBOOK</div>
-                <div style="position:absolute;bottom:.6rem;left:.7rem;font-size:.42rem;letter-spacing:1px;color:rgba(200,168,75,.4);z-index:1">PDF · EPUB</div>
-              </div>
-            </div>
-            <div class="bk bk-r">
-              <div class="bk-face" style="background:linear-gradient(160deg,#0a0a0a,#1a1a1a,#2d1b00)">
-                <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(255,120,0,.08),transparent)"></div>
-                <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(255,140,0,.4),transparent)"></div>
-                <div style="font-size:.45rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,140,0,.5);margin-bottom:.4rem;position:relative;z-index:1">THRILLER</div>
-                <div class="bk-ico">🔪</div>
-                <div class="bk-ttl" style="color:#ff8c00">Bayangan<br/>Tak Bernama</div>
-                <div style="width:30px;height:1px;background:rgba(255,140,0,.3);margin:.4rem auto;position:relative;z-index:1"></div>
-                <div class="bk-aut" style="color:#ff8c00">Rian Maulana</div>
-                <div style="position:absolute;bottom:.6rem;left:0;right:0;text-align:center;font-size:.42rem;letter-spacing:1.5px;color:rgba(255,140,0,.35);text-transform:uppercase">Aksara Store</div>
-              </div>
-            </div>
-            <div class="fl-badge">✦ Terlaris</div>
-            <div class="fl-badge2">
-              <div style="font-size:.58rem;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase">Akses Instan</div>
-              <div style="font-size:.7rem;margin-top:.1rem">📲 Setelah Pembayaran</div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="container position-relative text-center">
+    <div class="eyebrow mx-auto" style="justify-content:center"><span class="dot-pulse"></span>Selamat Datang di Aksara Store</div>
+    <h1 class="hero-h1" style="font-size:clamp(2.1rem,4.5vw,3.4rem)">Temukan Novel <span class="it">Favoritmu</span></h1>
+    <p class="hero-sub mx-auto text-center" style="max-width:520px">Jelajahi katalog novel digital lintas genre dan langsung baca setelah kamu memilih judulnya.</p>
+
+    <div class="search-wrap mx-auto" style="max-width:540px;margin-top:2rem">
+      <i class="bi bi-search"></i>
+      <input type="text" id="heroSearchInput" placeholder="Cari judul novel, penulis, atau genre..." onkeydown="if(event.key==='Enter'){goToCatalog(this.value)}"/>
+      <button class="btn-gold" style="padding:.5rem 1.2rem;font-size:.7rem" onclick="goToCatalog(document.getElementById('heroSearchInput').value)">Cari</button>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-center flex-wrap mt-3">
+      <button class="pill" onclick="quickGenre('semua')">Semua Novel</button>
+      <button class="pill" onclick="quickGenre('romance')">Romance</button>
+      <button class="pill" onclick="quickGenre('thriller')">Thriller</button>
+      <button class="pill" onclick="quickGenre('fantasy')">Fantasy</button>
     </div>
   </div>
 </section>
@@ -593,13 +1465,13 @@
 
     <!-- Filter + Sort -->
     <div class="filter-row rev">
-      <button class="pill active" onclick="filterG('semua',this)">Semua</button>
-      <button class="pill" onclick="filterG('romance',this)">Romance</button>
-      <button class="pill" onclick="filterG('thriller',this)">Thriller</button>
-      <button class="pill" onclick="filterG('fantasy',this)">Fantasy</button>
-      <button class="pill" onclick="filterG('misteri',this)">Misteri</button>
-      <button class="pill" onclick="filterG('drama',this)">Drama</button>
-      <button class="pill" onclick="filterG('horror',this)">Horror</button>
+      <button class="pill active" id="filterPill-semua" onclick="filterG('semua',this)">Semua</button>
+      <button class="pill" id="filterPill-romance" onclick="filterG('romance',this)">Romance</button>
+      <button class="pill" id="filterPill-thriller" onclick="filterG('thriller',this)">Thriller</button>
+      <button class="pill" id="filterPill-fantasy" onclick="filterG('fantasy',this)">Fantasy</button>
+      <button class="pill" id="filterPill-misteri" onclick="filterG('misteri',this)">Misteri</button>
+      <button class="pill" id="filterPill-drama" onclick="filterG('drama',this)">Drama</button>
+      <button class="pill" id="filterPill-horror" onclick="filterG('horror',this)">Horror</button>
       <select class="sort-select ms-auto" id="sortSelect" onchange="sortBooks()">
         <option value="default">Urutkan: Default</option>
         <option value="price-asc">Harga: Terendah</option>
@@ -1118,6 +1990,9 @@
 
 <div id="toast"></div>
 
+</div>
+<!-- ══════════════════════════ /AKSARA STORE APP ══════════════════════════ -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
@@ -1632,6 +2507,20 @@ function filterG(g, btn) {
   renderGrid();
 }
 
+// ── HERO QUICK ACTIONS ──────────────────────────────────────────────────
+function goToCatalog(query) {
+  const target = document.getElementById('searchInput');
+  target.value = query || '';
+  handleSearch(target);
+  document.getElementById('katalog').scrollIntoView({ behavior: 'smooth' });
+}
+
+function quickGenre(g) {
+  const pill = document.getElementById('filterPill-' + g);
+  if (pill) filterG(g, pill);
+  document.getElementById('katalog').scrollIntoView({ behavior: 'smooth' });
+}
+
 function handleSearch(inp) {
   searchQ = inp.value.trim();
   document.getElementById('clearBtn').classList.toggle('show', searchQ.length > 0);
@@ -1906,5 +2795,6 @@ loadNovels();
 renderAuthUI();
 renderGrid();
 </script>
+
 </body>
 </html>
